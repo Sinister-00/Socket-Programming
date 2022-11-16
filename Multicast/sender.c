@@ -12,17 +12,17 @@
 int main()
 {
     // Using multicast to send message to two server
-    int n=1;
-    int sockfd; 
-    char sendline[100];    
-    char *recipient_ip[n];
+    int n=1; //number of servers
+    int sockfd;  //socket file descriptor
+    char sendline[100];   //buffer to store the message  
+    char *recipient_ip[n]; //array to store the ip address of the servers
     recipient_ip[0]="172.20.10.4";//initialising reciepent ip address
     // recipient_ip[1]="192.168.122.142";
     //creating socket
-    sockfd=socket(AF_INET, SOCK_DGRAM, 0);
+    sockfd=socket(AF_INET, SOCK_DGRAM, 0); // create a UDP socket
 
     
-    while(1)
+    while(1) // infinte loop
     {
         bzero(sendline, sizeof(sendline)); //setting input value to zero in every iteration
         fgets(sendline, 100, stdin);// read the input from i/o
@@ -30,12 +30,12 @@ int main()
         for(int i=0; i<n; i++)
         {
             // Assigning the socket address
-            struct sockaddr_in saddr;
+            struct sockaddr_in saddr; //socket addresses for server and client
 
-            bzero(&saddr, sizeof(saddr));
-            saddr.sin_family=AF_INET;
-            saddr.sin_port=htons(22000);
-            saddr.sin_addr.s_addr=inet_addr(recipient_ip[i]);
+            bzero(&saddr, sizeof(saddr)); //assigning sender address
+            saddr.sin_family=AF_INET; //set the address family to Internet
+            saddr.sin_port=htons(22000); //assigning port number
+            saddr.sin_addr.s_addr=inet_addr(recipient_ip[i]); //ip address of the receiver
             //binding the socket
             bind(sockfd, (struct sockaddr*)&saddr, sizeof(saddr));
             //sending the socket to reciever
